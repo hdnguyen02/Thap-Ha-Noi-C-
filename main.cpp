@@ -66,7 +66,7 @@ const int CHIEU_NGANG_COT = 20;
 // viet ham ve ra cai dang cot 
 const int CHIEUCAOCOT = 640;
 
-const int soDia = 5; // gia su co 4 dia di
+
 
 const int CHIEUCAODIA = 30; // chieu cao cua cai dia 
 // tinh ra so dia toi da cua 1 cay chua duoc 
@@ -80,8 +80,8 @@ const int TOI_DA_DIA = CHIEUCAOCOT / CHIEUCAODIA;
 
 // viet ham hoan doi
 
-void hoanDoiSoNguyen(int soNguyen1,int soNguyen2) {
-	int intTemp =soNguyen1;; // nam du ho vung dia chi 
+void hoanDoiSoNguyen(int &soNguyen1,int &soNguyen2) {
+	int intTemp =soNguyen1;// nam du ho vung dia chi 
 	soNguyen1 = soNguyen2;
 	soNguyen2 = intTemp;
 }
@@ -179,25 +179,14 @@ void diChuyenDia(int toaDoCotDau,int soDiaCotDau,int toaDoCotSau,int soDiaCotSau
 	}
 	
 	}
-	
-	// da thoat ra khoi vong lap 
-	
 	veDia(toaDoXDiaTrenCung,TOADOYCOT - i*CHIEUCAODIA,banKinhDiaTrenCung); 
-	
-	// tiep tuc ve 
-	
-	// tiep tuc duy chuyen ngang cai cot sau 
 	if (toaDoCotDau - toaDoCotSau < 0) {   //  chung to 1 dieu cot truoc nam truoc cot sua !
 		// tinh ra so lan can phai di chuyen 
 		int doDaiDiChuyenDia = toaDoCotSau - toaDoCotDau; 
-		
-		// tinh ra so lan phai du chuyen 
 		int soLanDiChuyen = doDaiDiChuyenDia / (banKinhDiaTrenCung * 2); 
 		int j; 
 		for (j = 0; j < soLanDiChuyen;j++) {
-			// truoc tien can ve lai lai cai luc nay
 			veDia(toaDoXDiaTrenCung + j*banKinhDiaTrenCung*2,TOADOYCOT - i*CHIEUCAODIA,banKinhDiaTrenCung); 
-			// tiep theo la ve ra cac dia 
 			delay(200);
 			xoaDia(toaDoXDiaTrenCung + j*banKinhDiaTrenCung*2,TOADOYCOT - i*CHIEUCAODIA,banKinhDiaTrenCung); 
 			
@@ -222,11 +211,7 @@ void diChuyenDia(int toaDoCotDau,int soDiaCotDau,int toaDoCotSau,int soDiaCotSau
 		
 		
 	}
-	
-	// buoc tiep theo ha dia xuong tai cot C 
-	
-	// tinh lai vi tri cua cot cuoi cung 
-	
+
 	int toaDoDiaCotDauSoVoiCotSau = toaDoCotSau - banKinhDiaTrenCung + 10;  
 	// thu ve 1 cai xem sao 
 	veDia(toaDoDiaCotDauSoVoiCotSau,TOADOYCOT - i*CHIEUCAODIA,banKinhDiaTrenCung); 
@@ -249,47 +234,40 @@ void diChuyenDia(int toaDoCotDau,int soDiaCotDau,int toaDoCotSau,int soDiaCotSau
 }
 
 
-// khai bao 2 bien A va B 
-int A; 
-int B; 
+int A,C; 
 
 
 
-void thapHaNoi(int soLuongDia,int soLuongDiaThamChieu,int toaDoXCotA,int *diaCotA,int toaDoXCotB,int *diaCotB,int toaDoXCotC,int *diaCotC) {
-	if (soLuongDiaThamChieu == 1) {
-		// chi co 1 dia -> di chuyen tu cot nay sang cot kia 
-		// sap xep dia A tang dan => truoc kia la giam dan 
-		sapXepTangDan(diaCotA,soLuongDia);   //  sap xep the nay de cai dia lon nhat luon nam o phia du
-		sapXepGiamDan(diaCotC,soLuongDia); 
-		// lap qua voi so dia 
+
+void thapHaNoi(int n,int soLuongDia,int toaDoXCotA,int *diaCotA,int toaDoXCotB,int *diaCotB,int toaDoXCotC,int *diaCotC) {
+	if (n == 1) {
+		sapXepTangDan(diaCotA,soLuongDia);   //  sap xep the nay de dam bao trat tu cua cac dia
+		sapXepGiamDan(diaCotC,soLuongDia);   
+	
 		for (int i = 0;i < soLuongDia;i++) {  // vong lap dung de lay ra cai dia nao do khac 0
 			if (diaCotA[i] != 0) {
 				A = i; 
 				break; 
 			}
-			// Neu tat ca deu bang 0 -> thi gan cho A la 0 
-			A = 0; 
+			A = 0;    // dia nay con khong con gi ca !
 		}
-		
+
 		// di chuyen luon dia so 0 
 		for(int i = 0;i < soLuongDia;i++) {
 			if (diaCotC[i] != 0) {
-				B = i; 
+				C = i; 
 				break;
 			}
-			B = 0; 
+			C = 0; 
 		}
 		
 		// lay ra dia tren cung cua no 
 		int soDiaCotA = soPhanTuKhacKhong(diaCotA,soLuongDia); 
 		int soDiaCotC = soPhanTuKhacKhong(diaCotC,soLuongDia); 
-		// neu nhu chi co 1 dia => thi so dia cot C dang la 0  
-		// va so luong dia cot A dang la 1 
-		// tiep theo la di chuyen dia  
-		diChuyenDia(toaDoXCotA,soDiaCotA,toaDoXCotC,soDiaCotC,diaCotA[A]); 
-		
-		// tuong tu voi cotC  
-		for (int i = B; i < soDia;i++)
+
+		diChuyenDia(toaDoXCotA,soDiaCotA,toaDoXCotC,soDiaCotC,diaCotA[A]);   // bo vao A vi no la cai dia tren cung 
+	
+		for (int i = C; i < soLuongDia;i++)
 		{
 			if (diaCotC[i] == 0) {
 				hoanDoiSoNguyen(diaCotA[A],diaCotC[i]); 
@@ -297,21 +275,44 @@ void thapHaNoi(int soLuongDia,int soLuongDiaThamChieu,int toaDoXCotA,int *diaCot
 			}
 		}
 		
-		diaCotA[0] = 0; 
+		diaCotA[A] = 0; 
 				
 		
 	}
 	else {
-		// di chuyen N - 1 dia tu cot A sang cot B 
-		// sau do chuyen dia tu A sang C 
-		// sau do lai di chuyen N - 1 dia tu B sang C lay A lam trung giang  
-		thapHaNoi(soLuongDia,soLuongDia - 1,toaDoXCotA,diaCotA,toaDoXCotB,diaCotB,toaDoXCotC,diaCotC);
+		thapHaNoi(n - 1,soLuongDia,toaDoXCotA,diaCotA,toaDoXCotC,diaCotC,toaDoXCotB,diaCotB);
+		thapHaNoi(1,soLuongDia,toaDoXCotA,diaCotA,toaDoXCotB,diaCotB,toaDoXCotC,diaCotC);
+		thapHaNoi(n-1,soLuongDia,toaDoXCotB,diaCotB,toaDoXCotA,diaCotA,toaDoXCotC,diaCotC);
 		
 	}
 }
 
 
+
+// viet ham khai bao :  
+
+
+
+
+
+
 int main() {
+	
+	int soDia; 
+	do {
+		cout << "Nhap vao so dia : "; 
+		cin >> soDia; 
+		if (soDia <0 || soDia > 8) {
+			cout << endl << "So Dia Tu 0 -> 7" << endl; 
+		}
+		else {
+			break; 
+		}
+	}
+	while (true); 
+	
+	cout << soDia; 
+	
 	StartBGI start; 
 	int *diaCotA = new int[soDia];
 	int *diaCotB = new int[soDia]; 
@@ -319,42 +320,25 @@ int main() {
 	
 
 	for (int i = 0; i < soDia;i++) {
-		diaCotA[i] = 0; 
-		diaCotC[i] = 0; 
-		diaCotB[i] = BANKINHDIA * 2 * i + 20;    //  20 la do dai cua cai dia tren cung  
+		diaCotA[i] = BANKINHDIA * 2 * i + 20; 
+		diaCotB[i] = 0; 
+		diaCotC[i] = 0;    //  20 la do dai cua cai dia tren cung  
 	}
 	veThanhNgangVaTieuDe(); 
 	int soDiaTam = soDia; 
 	for (int i = 0; i < soDia;i++) {
 		// tinh ra vi tri x bac dau ve ra 
-		int viTriXDia =  TOADOXCOTB - diaCotB[i] + 10; 
+		int viTriXDia =  TOADOXCOTA - diaCotA[i] + 10; 
 		setfillstyle(SOLID_FILL, 10); // bo bua.
-	 	bar (viTriXDia,TOADOYCOT - soDiaTam*CHIEUCAODIA + KHOANCACHDIA,viTriXDia + diaCotB[i]*2,TOADOYCOT - soDiaTam*CHIEUCAODIA + CHIEUCAODIA); 
+	 	bar (viTriXDia,TOADOYCOT - soDiaTam*CHIEUCAODIA + KHOANCACHDIA,viTriXDia + diaCotA[i]*2,TOADOYCOT - soDiaTam*CHIEUCAODIA + CHIEUCAODIA); 
 		soDiaTam--;
 	}
 	
 	veCot(TOADOXCOTA,soDia);
-	veCot(TOADOXCOTB,soDia);   
+	veCot(TOADOXCOTB,0);   
 	veCot(TOADOXCOTC,0); 
-	
-	
-	// den voi bai toan thap ha noi thoi  
-	
-	
-	
-	int soDiaCotB = soPhanTuKhacKhong(diaCotB,soDia); 
-	diChuyenDia(TOADOXCOTB,soDiaCotB,TOADOXCOTA,2,diaCotB[0]);  // a[0] la dia tren cung  
-	 
-	
-	
-	// sua lai thanh cot C co 1 dia di
-	
-	// giai phong di
-	delete []diaCotA; 
-	delete []diaCotB;
-	delete []diaCotC; 
-	
-	
+
+	thapHaNoi(soDia,soDia,TOADOXCOTA,diaCotA,TOADOXCOTB,diaCotB,TOADOXCOTC,diaCotC); 	
 	
 	getch(); 
 	// tiep tuc ve ra 
