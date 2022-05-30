@@ -6,23 +6,12 @@
 #include <windows.h>
 using namespace std;
  
-
-//   khai bao ra struct ONhap => dung de nhap xuat tren man hinh BGI 
-
-
-
 class StartBGI
 {
 public:
 	StartBGI()
 	{
-		int y = GetSystemMetrics(SM_CYSCREEN);
-		int x = GetSystemMetrics(SM_CXSCREEN);
-		initwindow(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) - 40);
-	}
-	~StartBGI()
-	{
-		closegraph();
+		initwindow(GetSystemMetrics(SM_CXSCREEN) - 600, GetSystemMetrics(SM_CYSCREEN) - 40);
 	}
 };
 
@@ -51,20 +40,11 @@ void khoiTaoBanKinhDiaCotACotBCotC(int *diaCotA,int *diaCotB,int *diaCotC,int &s
 	
 }
 
-void setText(int bkColor,int colorText,int typeFont,int size) {
-	setbkcolor(bkColor); 
-	setcolor(colorText); 
-	settextstyle(typeFont,0,size);
-}
-
 
 
 struct NutBam {
-	// bao gom cac thong so sau 
 	int x,y,w,h,color,colorText;
 	string tieuDe; 
-	// ve ham ve 
-	// viet ham   bao 
 	void set(int x,int y,int w,int h,int color,int colorText,string tieuDe) {
 		this->x = x;
 		this->y = y; 

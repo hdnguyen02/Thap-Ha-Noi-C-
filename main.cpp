@@ -1,8 +1,12 @@
 #include "DoHoa.h"
 #include "Constant.h"
-#include "CoSoDoHoa.h"
+#include "sstream"
 using namespace std; 
 
+
+
+
+int thoiGian = 200;   //  thoi gian chay 
 void hoanDoiSoNguyen(int &soNguyen1,int &soNguyen2); 
 void sapXepTangDan(int *arr,int soLuongPhanTu);
 void sapXepGiamDan(int *arr,int soLuongPhanTu);
@@ -15,25 +19,38 @@ void veDia(int toaDoX,int toaDoY,int banKinh);
 void xoaDia(int toaDoX,int toaDoY,int banKinh);
 void diChuyenDia(int toaDoCotDau,int soDiaCotDau,int toaDoCotSau,int soDiaCotSau,int banKinhDiaTrenCung);
 int A,C; 
-void thapHaNoi(int n,int soLuongDia,int toaDoXCotA,int *diaCotA,int toaDoXCotB,int *diaCotB,int toaDoXCotC,int *diaCotC); 
+void thapHaNoi(int n,int soLuongDia,int toaDoXCotA,int *diaCotA,int toaDoXCotB,int *diaCotB,int toaDoXCotC,int *diaCotC, string strA,string strB, string strC); 
+string intToString(int n); 
 
-
-
-int main() {
+int main() 
+{
 	int soDia; 
 	nhapDia(soDia);	
 	StartBGI start; 
+	settextstyle(10,0,1); 
+	string strsoDia = "So Dia : " + intToString(soDia); 
+	outtextxy(410,30,(char*)strsoDia.c_str()); 
 	int *diaCotA = new int[soDia];
 	int *diaCotB = new int[soDia]; 
 	int *diaCotC = new int[soDia]; 
 	khoiTaoBanKinhDiaCotACotBCotC(diaCotA,diaCotB,diaCotC,soDia);
 	khoiTaoGiaoDien(diaCotA,TOADO_X_COT_A,TOADO_X_COT_B,TOADO_X_COT_C,soDia);
-	thapHaNoi(soDia,soDia,TOADO_X_COT_A,diaCotA,TOADO_X_COT_B,diaCotB,TOADO_X_COT_C,diaCotC); 	
-	getch(); 
+	thapHaNoi(soDia,soDia,TOADO_X_COT_A,diaCotA,TOADO_X_COT_B,diaCotB,TOADO_X_COT_C,diaCotC,"A","B","C"); 	
 	delete []diaCotA;delete[]diaCotB;delete []diaCotC; 
+	MessageBox(NULL, "Hoan Thanh", "Thong Bao!", MB_ICONINFORMATION | MB_OK);
+	getch(); 
+	closegraph();
 	return 0; 
 }
 
+string intToString(int n) 
+{
+	stringstream ss; 
+	ss << n; 
+	string s; 
+	ss >> s; 
+	return s;
+}
 
 
 void hoanDoiSoNguyen(int &soNguyen1,int &soNguyen2) {
@@ -42,12 +59,10 @@ void hoanDoiSoNguyen(int &soNguyen1,int &soNguyen2) {
 	soNguyen2 = intTemp;
 }
 
-// viet ham so sanh giam gian 
 void sapXepTangDan(int *arr,int soLuongPhanTu) {
 	for (int i = 0; i < soLuongPhanTu - 1;i++) {
 		for (int j = i + 1;j < soLuongPhanTu;j++) {
 			if (arr[i] > arr[j]) {
-				// hoan doi tai cho nay 
 				hoanDoiSoNguyen(arr[i],arr[j]); 
 			}
 			
@@ -60,7 +75,6 @@ void sapXepGiamDan(int *arr,int soLuongPhanTu) {
 	for (int i = 0; i < soLuongPhanTu - 1;i++) {
 		for (int j = i + 1;j < soLuongPhanTu;j++) {
 			if (arr[i] < arr[j]) {
-				// hoan doi tai cho nay 
 				hoanDoiSoNguyen(arr[i],arr[j]); 
 			}
 			
@@ -68,11 +82,10 @@ void sapXepGiamDan(int *arr,int soLuongPhanTu) {
 	}
 }
 
-// viet them ham dem so luong 0 
+
 
 int soPhanTuKhacKhong(int *arr,int soLuongPhanTu) 
 {
-	// dem xem
 	int demSoLuongPhanTuKhacKhong = 0; 
 	for (int i = 0; i < soLuongPhanTu;i++) {
 		if (arr[i] != 0) {
@@ -125,58 +138,58 @@ void khoiTaoGiaoDien(int *diaCotA,int toaDoXCotA,int toaDoXCotB,int toaDoXCotC,i
 }
 
 
-// ve ham in cot 
-
-
-
-
 
 
 void veDia(int toaDoX,int toaDoY,int banKinh) {
-	setfillstyle(SOLID_FILL, 10); // bo bua.
-	bar(toaDoX,toaDoY ,toaDoX + banKinh * 2,toaDoY - CHIEU_CAO_DIA); // ta dan tinh tu duoi nen -> nen phai ve the nay ! 
+	setfillstyle(SOLID_FILL, COLOR_DIA); // bo bua.
+	bar(toaDoX,toaDoY ,toaDoX + banKinh * 2,toaDoY - CHIEU_CAO_DIA + KHOAN_CACH_DIA); // ta dan tinh tu duoi nen -> nen phai ve the nay ! 
 } 
 
 
 void xoaDia(int toaDoX,int toaDoY,int banKinh) {
 	setfillstyle(SOLID_FILL, COLOR_BACKGROUP); // bo bua.
-	bar(toaDoX,toaDoY,toaDoX + banKinh * 2,toaDoY - CHIEU_CAO_DIA); 
+	bar(toaDoX,toaDoY,toaDoX + banKinh * 2,toaDoY - CHIEU_CAO_DIA - KHOAN_CACH_DIA); 
 }
 
 
-void diChuyenDia(int toaDoCotDau,int soDiaCotDau,int toaDoCotSau,int soDiaCotSau,int banKinhDiaTrenCung) {
-	int toaDoXDiaTrenCung = toaDoCotDau - banKinhDiaTrenCung +10; 
-	int i; 
-	int thoiGian = 300; 
-	char c; 
-	for (i = soDiaCotDau - 1; i < TOI_DA_DIA;i++) 
-	{ 
-	veDia(toaDoXDiaTrenCung,TOA_DO_Y_COT - i*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
-	delay(thoiGian);
-	xoaDia(toaDoXDiaTrenCung,TOA_DO_Y_COT - i*CHIEU_CAO_DIA,banKinhDiaTrenCung );
-	veCot(toaDoCotDau,soDiaCotDau - 1); 
-	NutBam tieuDe(1268,340,200,40,COLOR_BACKGROUP,14,"DIEU KHIEN TOC DO"); 
-	tieuDe.veNut(); 
-	NutBam tangThoiGian(1260,400,100,40,15,0,"TANG"); 
-	tangThoiGian.veNut(); 
-	NutBam giamThoiGian(1440 - 60,400,100,40,15,0,"GIAM"); 
-	giamThoiGian.veNut();
+
+// toi uu hoa ham di chuyen... 
+// viet ham su ly trung tam dieu khien 
+void dieuKhienTocDo(NutBam &tangThoiGian,NutBam &giamThoiGian)
+{
 	int xclick,yclick; 
 	if (ismouseclick(WM_LBUTTONDOWN))
 		{
 			getmouseclick(WM_LBUTTONDOWN, xclick, yclick);
 			if (tangThoiGian.isMouseHover(xclick,yclick)) {
-				// xu ly tang toc do 
-				
-				
+				if (thoiGian > 10) {  // tang thoi gian len -> mieng la 
+					thoiGian = thoiGian - 50; 
+				}
 			}
 			else if (giamThoiGian.isMouseHover(xclick,yclick)) {
-				
+				if (thoiGian <= 300) {
+					thoiGian = thoiGian + 50; // g
+				}
 			}
 		}
+}
 
-
-	
+void diChuyenDia(int toaDoCotDau,int soDiaCotDau,int toaDoCotSau,int soDiaCotSau,int banKinhDiaTrenCung) {
+	NutBam tieuDe(368,50,200,40,COLOR_BACKGROUP,14,"DIEU KHIEN TOC DO"); 
+	tieuDe.veNut(); 
+	NutBam tangThoiGian(356 + 144,100,100,40,15,0,"TANG"); 
+	tangThoiGian.veNut(); 
+	NutBam giamThoiGian(340 ,100,100,40,15,0,"GIAM"); 
+	giamThoiGian.veNut();
+	int toaDoXDiaTrenCung = toaDoCotDau - banKinhDiaTrenCung +10;    //   lay ra toa do X cua dia tren cung cua cot dau 
+	int i; 
+	for (i = soDiaCotDau - 1; i < TOI_DA_DIA;i++) 
+	{ 
+	veDia(toaDoXDiaTrenCung,TOA_DO_Y_COT - i*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
+	delay(thoiGian);
+	xoaDia(toaDoXDiaTrenCung,TOA_DO_Y_COT - i*CHIEU_CAO_DIA,banKinhDiaTrenCung );
+	veCot(toaDoCotDau,soDiaCotDau - 1);   //  ve lai tru sau khi xoa khi vua xoa dia
+	dieuKhienTocDo(tangThoiGian,giamThoiGian);
 
 	}
 	veDia(toaDoXDiaTrenCung,TOA_DO_Y_COT - i*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
@@ -188,8 +201,7 @@ void diChuyenDia(int toaDoCotDau,int soDiaCotDau,int toaDoCotSau,int soDiaCotSau
 			veDia(toaDoXDiaTrenCung + j*banKinhDiaTrenCung*2,TOA_DO_Y_COT - i*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
 			delay(thoiGian);
 			xoaDia(toaDoXDiaTrenCung + j*banKinhDiaTrenCung*2,TOA_DO_Y_COT - i*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
-			
-			
+			dieuKhienTocDo(tangThoiGian,giamThoiGian);
 		}
 	}
 	else {
@@ -200,6 +212,7 @@ void diChuyenDia(int toaDoCotDau,int soDiaCotDau,int toaDoCotSau,int soDiaCotSau
 			veDia(toaDoXDiaTrenCung - j*banKinhDiaTrenCung*2,TOA_DO_Y_COT - i*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
 			delay(thoiGian);
 			xoaDia(toaDoXDiaTrenCung - j*banKinhDiaTrenCung*2,TOA_DO_Y_COT - i*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
+			dieuKhienTocDo(tangThoiGian,giamThoiGian);
 		}
 	}
 
@@ -209,17 +222,21 @@ void diChuyenDia(int toaDoCotDau,int soDiaCotDau,int toaDoCotSau,int soDiaCotSau
 	int toaDoDiaTrenCungcotTruoc = TOA_DO_Y_COT - i*CHIEU_CAO_DIA; 
 	int soLanLap = (toaDoDiaTrenCungCotSau - toaDoDiaTrenCungcotTruoc) / CHIEU_CAO_DIA; 
 	int k;
-	for ( k = 0;k < soLanLap;k++) {
+	for ( k = 0;k < soLanLap;k++) 
+	{
 		veDia(toaDoDiaCotDauSoVoiCotSau,toaDoDiaTrenCungcotTruoc + k*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
 		delay(thoiGian); 
-		xoaDia(toaDoDiaCotDauSoVoiCotSau,toaDoDiaTrenCungcotTruoc + k*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
-		veCot(toaDoCotSau,soDiaCotSau); 
+		xoaDia(toaDoDiaCotDauSoVoiCotSau,toaDoDiaTrenCungcotTruoc + k*CHIEU_CAO_DIA + KHOAN_CACH_DIA,banKinhDiaTrenCung); 
+	 	veCot(toaDoCotSau,soDiaCotSau); 
+	 	dieuKhienTocDo(tangThoiGian,giamThoiGian);
 	}
+	xoaDia(toaDoDiaCotDauSoVoiCotSau,toaDoDiaTrenCungcotTruoc + k*CHIEU_CAO_DIA + KHOAN_CACH_DIA,banKinhDiaTrenCung); 
 	veDia(toaDoDiaCotDauSoVoiCotSau,toaDoDiaTrenCungcotTruoc + k*CHIEU_CAO_DIA,banKinhDiaTrenCung); 
 }
 
-void thapHaNoi(int n,int soLuongDia,int toaDoXCotA,int *diaCotA,int toaDoXCotB,int *diaCotB,int toaDoXCotC,int *diaCotC) {
+void thapHaNoi(int n,int soLuongDia,int toaDoXCotA,int *diaCotA,int toaDoXCotB,int *diaCotB,int toaDoXCotC,int *diaCotC, string strA,string strB, string strC) {
 	if (n == 1) {
+		cout << strA << "->" << strC << endl; 
 		sapXepTangDan(diaCotA,soLuongDia);  
 		sapXepGiamDan(diaCotC,soLuongDia);   
 		for (int i = 0;i < soLuongDia;i++) {  // vong lap dung de lay ra cai dia nao do khac 0
@@ -255,9 +272,9 @@ void thapHaNoi(int n,int soLuongDia,int toaDoXCotA,int *diaCotA,int toaDoXCotB,i
 		diaCotA[A] = 0; 
 	}
 	else {
-		thapHaNoi(n - 1,soLuongDia,toaDoXCotA,diaCotA,toaDoXCotC,diaCotC,toaDoXCotB,diaCotB);
-		thapHaNoi(1,soLuongDia,toaDoXCotA,diaCotA,toaDoXCotB,diaCotB,toaDoXCotC,diaCotC);
-		thapHaNoi(n-1,soLuongDia,toaDoXCotB,diaCotB,toaDoXCotA,diaCotA,toaDoXCotC,diaCotC);
+		thapHaNoi(n-1,soLuongDia,toaDoXCotA,diaCotA,toaDoXCotC,diaCotC,toaDoXCotB,diaCotB,strA,strC,strB);
+		thapHaNoi(1,soLuongDia,toaDoXCotA,diaCotA,toaDoXCotB,diaCotB,toaDoXCotC,diaCotC,strA,strB,strC);
+		thapHaNoi(n-1,soLuongDia,toaDoXCotB,diaCotB,toaDoXCotA,diaCotA,toaDoXCotC,diaCotC,strB,strA,strC);
 		
 	}
 }
